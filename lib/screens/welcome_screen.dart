@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_application/screens/login_screen.dart';
 import 'registration_screen.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const id = 'welcome_screen';
@@ -18,19 +19,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 2),
     );
-    animation = CurvedAnimation(parent: controller, curve: Curves.decelerate);
+    animation = ColorTween(begin: Color(0xFF4C566A), end: Color(0xFF81A1C1))
+        .animate(controller);
     controller.forward();
-    controller.addStatusListener((status) {
-      setState(() {
-        if (animation.isCompleted) {
-          controller.reverse(from: 1);
-        } else if (animation.isDismissed) {
-          controller.forward();
-        }
-      });
-    });
+
     controller.addListener(() {
       setState(() {
         // print(animation.value);
@@ -47,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: animation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -60,16 +54,30 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: animation.value * 100,
+                    height: 60,
                   ),
                 ),
-                Text(
-                  'Flash Chat',
-                  style: TextStyle(
-                    fontSize: 45.0,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                  ),
+                // TypewriterAnimatedTex(
+                //   textStyle: TextStyle(
+                //     fontSize: 45.0,
+                //     fontWeight: FontWeight.w900,
+                //     color: Color(0xFFECEFF4),
+                //   ),
+                // ),
+                AnimatedTextKit(
+                  totalRepeatCount: 1,
+                  repeatForever: false,
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Flash Chat',
+                      speed: Duration(milliseconds: 400),
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 45,
+                        color: Color(0xFFECEFF4),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
