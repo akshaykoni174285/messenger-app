@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger_application/constants.dart';
+import 'welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -34,8 +35,14 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
-              onPressed: () {
-                //Implement logout functionality
+              onPressed: () async {
+                //Implement logout functionality\
+                try {
+                  final logoutuser = await _auth.signOut();
+                  Navigator.popAndPushNamed(context, WelcomeScreen.id);
+                } catch (e) {
+                  print(e);
+                }
               }),
         ],
         title: Text('⚡️Chat'),
