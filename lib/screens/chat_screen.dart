@@ -30,6 +30,20 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  // void getmessages() async {
+  //   var data = await _firestore.collection('messages').get();
+  //   for (var message in data.docs) {
+  //     print(message.data());
+  //   }
+  // }
+  void getsnapshots() async {
+    await for (var snapshots in _firestore.collection('messages').snapshots()) {
+      for (var snapshot in snapshots.docs) {
+        print(snapshot.data());
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -45,13 +59,14 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () async {
+                getsnapshots();
                 //Implement logout functionality\
-                try {
-                  final logoutuser = await _auth.signOut();
-                  Navigator.popAndPushNamed(context, WelcomeScreen.id);
-                } catch (e) {
-                  print(e);
-                }
+                // try {
+                //   final logoutuser = await _auth.signOut();
+                //   Navigator.popAndPushNamed(context, WelcomeScreen.id);
+                // } catch (e) {
+                //   print(e);
+                // }
               }),
         ],
         title: Text('⚡️Chat'),
